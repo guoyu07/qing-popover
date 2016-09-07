@@ -1,0 +1,27 @@
+{
+  "name": "qing-popover",
+  "version": "0.0.1",
+  "description": "popover component.",
+  "homepage": "http://mycolorway.github.io/qing-popover",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mycolorway/qing-popover.git"
+  },
+  "author": "farthinker <farthinker@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mycolorway/qing-popover/issues"
+  },
+  "main": "dist/qing-popover.js",
+  "scripts": {
+    "start": "gulp",
+    "test": "gulp test"
+  },
+  "dependencies": {
+    "jquery": "^3.1.0",
+    "qing-module": "~1.0.0"
+  },
+  "devDependencies": {
+    "qing-build": "^0.x"
+  }
+}
