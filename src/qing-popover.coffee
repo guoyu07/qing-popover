@@ -1,47 +1,83 @@
-Popover = require './views/popover.coffee'
+Popover = require './popover.coffee'
+Position = require './position.coffee'
 
 class QingPopover extends QingModule
 
   @opts:
-    el: null
-    popover: {}
+    pointTo: null
+    cls: null
+    content: null
+    direction: null
+    arrowOffset: 16
+    offset: null
+    align:
+      horizental: 'center'
+      vertical: 'middle'
 
   constructor: (opts) ->
     super
 
-    @el = $ @opts.el
-    unless @el.length > 0
+    @pointTo = $ @opts.pointTo
+    unless @pointTo.length > 0
       throw new Error 'QingPopover: option el is required'
 
     @opts = $.extend {}, QingPopover.opts, @opts
 
     QingPopover.destroyAll()
     @_render()
-    @_initChildComponents()
     @_bind()
-    @trigger 'ready'
+    @refresh()
 
   _render: ->
-    @el.addClass 'qing-popover-point-to'
+    @pointTo.addClass 'qing-popover-point-to'
       .data 'qingPopover', @
 
-  _initChildComponents: ->
-    @popover = new Popover $.extend(
-      pointTo: @el
-    , @opts.popover)
+    @popover = new Popover
+      qingPopover: @
+      cls: @opts.cls
+      content: @opts.content
+
+    @position = new Position
+      pointTo: @pointTo
+      popover: @popover.el
+      direction: @opts.direction
+      arrowOffset: @opts.arrowOffset
+      offset: @opts.offset
+      align: @opts.align
 
   _bind: ->
     $(window).on 'resize.qing-popover', =>
-      @popover.refresh()
+      @refresh()
 
-    @popover.on 'autohide', =>
-      @destroy()
+    if @opts.autohide
+      $(document).on 'mousedown.qing-popover', (e) =>
+        target = $ e.target
+
+        return if target.is(@pointTo) or
+        @popover.el.has(target).length or
+        target.is(@popover.el)
+
+        @destroy()
+
+  refresh: ->
+    @popover.el.removeClass Position._directions.join(' ')
+    @popover.arrow.css
+      top: ''
+      bottom: ''
+      left: ''
+      right: ''
+
+    @position.update()
+
+    @popover.el.addClass @position.direction
+      .css @position.position
 
   destroy: ->
     $(window).off '.qing-popover'
-    @el.off '.qing-popover'
+    $(document).off '.qing-popover'
+    @pointTo.off '.qing-popover'
     @popover.destroy()
-    @el.removeClass 'qing-popover-point-to'
+    @pointTo.removeClass 'qing-popover-point-to'
       .removeData 'qingPopover'
 
   @destroyAll: ->
@@ -49,7 +85,7 @@ class QingPopover extends QingModule
       $popoverEl = $ @
       qingPopover = $popoverEl.data 'qingPopover'
 
-      if qingPopover.el.index() is -1
+      if qingPopover.pointTo.index() is -1
         $popoverEl.remove()
       else
         qingPopover.destroy()

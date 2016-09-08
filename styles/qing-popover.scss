@@ -1,3 +1,5 @@
+$arrowSize: 16px;
+
 .qing-popover {
 	position: absolute;
 	left: -9999px;
@@ -7,23 +9,23 @@
 	.qing-popover-content {
 		padding: 10px 15px;
 		background: #fff;
-		border: 1px solid #ccc;
-		border-radius: 6px;
-		box-shadow: 0 0 3px rgba(0,0,0,0.2);
+		border: .5px solid #ddd;
+		border-radius: 2px;
+		box-shadow: 0 0 6px rgba(0,0,0,0.15);
 		white-space: nowrap;
 	}
 
 	.qing-popover-arrow {
 		position: absolute;
-		width: 16px;
-		height: 16px;
+		width: $arrowSize;
+		height: $arrowSize;
 
     .arrow {
       font-size: 0;
 		  height: 0;
 		  width: 0;
 		  border-style: solid;
-		  border-width: 8px;
+		  border-width: $arrowSize / 2;
 		  position: absolute;
 		  left: 0;
 		  top: 0;
@@ -34,7 +36,7 @@
 	&.direction-right-bottom,
 	&.direction-right-middle {
     .qing-popover-arrow {
-      left: -16px;
+      left: -$arrowSize;
     }
 
 	  .arrow-basic {
@@ -43,18 +45,13 @@
     }
 
     .arrow-border {
-      border-color: transparent #c3c3c3 transparent transparent;
+      border-color: transparent #ddd transparent transparent;
       left: 0px;
     }
 
     .arrow-shadow-0 {
-      border-color: transparent rgba(0,0,0,0.1) transparent transparent;
+      border-color: transparent rgba(0,0,0,0.08) transparent transparent;
       left: -1px;
-    }
-
-    .arrow-shadow-1 {
-      border-color: transparent rgba(0,0,0,0.05) transparent transparent;
-      left: -2px;
     }
 	}
 
@@ -62,7 +59,7 @@
 	&.direction-left-bottom,
 	&.direction-left-middle {
 	  .qing-popover-arrow {
-	    right: -16px;
+	    right: -$arrowSize;
     }
 
     .arrow-basic {
@@ -71,32 +68,27 @@
     }
 
     .arrow-border {
-      border-color: transparent transparent transparent #c3c3c3;
+      border-color: transparent transparent transparent #ddd;
       left: 0px;
     }
 
     .arrow-shadow-0 {
-      border-color: transparent transparent transparent rgba(0,0,0,0.1);
+      border-color: transparent transparent transparent rgba(0,0,0,0.08);
       left: 1px;
-    }
-
-    .arrow-shadow-1 {
-      border-color: transparent transparent transparent rgba(0,0,0,0.05);
-      left: 2px;
     }
 	}
 
 	&.direction-left-top,
 	&.direction-right-top {
 	  .qing-popover-arrow {
-      bottom: 16px;
+      bottom: $arrowSize;
     }
   }
 
   &.direction-left-bottom,
   &.direction-right-bottom {
     .qing-popover-arrow {
-      top: 16px;
+      top: $arrowSize;
     }
   }
 
@@ -104,7 +96,7 @@
   &.direction-right-middle {
     .qing-popover-arrow {
       top: 50%;
-      margin-top: -8px;
+      margin-top: -$arrowSize / 2;
     }
   }
 
@@ -112,7 +104,7 @@
   &.direction-top-right,
   &.direction-top-center {
     .qing-popover-arrow {
-      bottom: -16px;
+      bottom: -$arrowSize;
     }
 
     .arrow-basic {
@@ -121,18 +113,13 @@
     }
 
     .arrow-border {
-      border-color: #c3c3c3 transparent transparent transparent;
+      border-color: #ddd transparent transparent transparent;
       top: 0px;
     }
 
     .arrow-shadow-0 {
-      border-color: rgba(0,0,0,0.1) transparent transparent transparent;
+      border-color: rgba(0,0,0,0.08) transparent transparent transparent;
       top: 1px;
-    }
-
-    .arrow-shadow-1 {
-      border-color: rgba(0,0,0,0.05) transparent transparent transparent;
-      top: 2px;
     }
   }
 
@@ -140,7 +127,7 @@
 	&.direction-bottom-right,
 	&.direction-bottom-center {
     .qing-popover-arrow {
-	    top: -16px;
+	    top: -$arrowSize;
     }
 
     .arrow-basic {
@@ -149,33 +136,28 @@
     }
 
     .arrow-border {
-      border-color: transparent transparent #c3c3c3 transparent;
+      border-color: transparent transparent #ddd transparent;
       top: 0px;
     }
 
     .arrow-shadow-0 {
-      border-color: transparent transparent rgba(0,0,0,0.1) transparent;
+      border-color: transparent transparent rgba(0,0,0,0.08) transparent;
       top: -1px;
 
-    }
-
-    .arrow-shadow-1 {
-      border-color: transparent transparent rgba(0,0,0,0.05) transparent;
-      top: -2px;
     }
   }
 
   &.direction-top-left,
   &.direction-bottom-left {
     .qing-popover-arrow {
-      right: 16px;
+      right: $arrowSize;
     }
   }
 
   &.direction-top-right,
   &.direction-bottom-right {
     .qing-popover-arrow {
-      left: 16px;
+      left: $arrowSize;
     }
   }
 
@@ -183,7 +165,7 @@
   &.direction-bottom-center {
     .qing-popover-arrow {
       left: 50%;
-      margin-left: -8px;
+      margin-left: -$arrowSize / 2;
     }
   }
 }

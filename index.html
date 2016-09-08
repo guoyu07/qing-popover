@@ -6,20 +6,31 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<link media="all" rel="stylesheet" type="text/css" href="dist/qing-popover.css">
+	<style>
+		.test-el {
+			position: absolute;
+			top: 200px;
+			left: 200px;
+		}
+	</style>
 
 	<script type="text/javascript" src="node_modules/jquery/dist/jquery.js"></script>
 	<script type="text/javascript" src="node_modules/qing-module/dist/qing-module.js"></script>
 	<script type="text/javascript" src="dist/qing-popover.js"></script>
 	<script type="text/javascript">
 		$(function() {
-      var qingPopover = new QingPopover({
-        el: '.test-el'
-      });
+			$('.test-el').on('click', function() {
+			  var qingPopover = new QingPopover({
+	        pointTo: '.test-el',
+					// direction: 'top-center',
+					content: 'hello'
+	      });
+			});
 		});
 	</script>
 
 </head>
 <body>
-  <div class="test-el"></div>
+  <span class="test-el">click me</span>
 </body>
 </html>

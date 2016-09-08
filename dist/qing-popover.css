@@ -6,7 +6,7 @@
  * Released under the MIT license
  * http://mycolorway.github.io/qing-popover/license.html
  *
- * Date: 2016-09-7
+ * Date: 2016-09-8
  */
 .qing-popover {
   position: absolute;
@@ -16,9 +16,9 @@
   .qing-popover .qing-popover-content {
     padding: 10px 15px;
     background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    box-shadow: 0 0 3px rgba(0, 0, 0, 0.2);
+    border: .5px solid #ddd;
+    border-radius: 2px;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.15);
     white-space: nowrap; }
   .qing-popover .qing-popover-arrow {
     position: absolute;
@@ -39,28 +39,22 @@
     border-color: transparent #fff transparent transparent;
     left: 1px; }
   .qing-popover.direction-right-top .arrow-border, .qing-popover.direction-right-bottom .arrow-border, .qing-popover.direction-right-middle .arrow-border {
-    border-color: transparent #c3c3c3 transparent transparent;
+    border-color: transparent #ddd transparent transparent;
     left: 0px; }
   .qing-popover.direction-right-top .arrow-shadow-0, .qing-popover.direction-right-bottom .arrow-shadow-0, .qing-popover.direction-right-middle .arrow-shadow-0 {
-    border-color: transparent rgba(0, 0, 0, 0.1) transparent transparent;
+    border-color: transparent rgba(0, 0, 0, 0.08) transparent transparent;
     left: -1px; }
-  .qing-popover.direction-right-top .arrow-shadow-1, .qing-popover.direction-right-bottom .arrow-shadow-1, .qing-popover.direction-right-middle .arrow-shadow-1 {
-    border-color: transparent rgba(0, 0, 0, 0.05) transparent transparent;
-    left: -2px; }
   .qing-popover.direction-left-top .qing-popover-arrow, .qing-popover.direction-left-bottom .qing-popover-arrow, .qing-popover.direction-left-middle .qing-popover-arrow {
     right: -16px; }
   .qing-popover.direction-left-top .arrow-basic, .qing-popover.direction-left-bottom .arrow-basic, .qing-popover.direction-left-middle .arrow-basic {
     border-color: transparent transparent transparent #fff;
     left: -1px; }
   .qing-popover.direction-left-top .arrow-border, .qing-popover.direction-left-bottom .arrow-border, .qing-popover.direction-left-middle .arrow-border {
-    border-color: transparent transparent transparent #c3c3c3;
+    border-color: transparent transparent transparent #ddd;
     left: 0px; }
   .qing-popover.direction-left-top .arrow-shadow-0, .qing-popover.direction-left-bottom .arrow-shadow-0, .qing-popover.direction-left-middle .arrow-shadow-0 {
-    border-color: transparent transparent transparent rgba(0, 0, 0, 0.1);
+    border-color: transparent transparent transparent rgba(0, 0, 0, 0.08);
     left: 1px; }
-  .qing-popover.direction-left-top .arrow-shadow-1, .qing-popover.direction-left-bottom .arrow-shadow-1, .qing-popover.direction-left-middle .arrow-shadow-1 {
-    border-color: transparent transparent transparent rgba(0, 0, 0, 0.05);
-    left: 2px; }
   .qing-popover.direction-left-top .qing-popover-arrow, .qing-popover.direction-right-top .qing-popover-arrow {
     bottom: 16px; }
   .qing-popover.direction-left-bottom .qing-popover-arrow, .qing-popover.direction-right-bottom .qing-popover-arrow {
@@ -74,28 +68,22 @@
     border-color: #fff transparent transparent transparent;
     top: -1px; }
   .qing-popover.direction-top-left .arrow-border, .qing-popover.direction-top-right .arrow-border, .qing-popover.direction-top-center .arrow-border {
-    border-color: #c3c3c3 transparent transparent transparent;
+    border-color: #ddd transparent transparent transparent;
     top: 0px; }
   .qing-popover.direction-top-left .arrow-shadow-0, .qing-popover.direction-top-right .arrow-shadow-0, .qing-popover.direction-top-center .arrow-shadow-0 {
-    border-color: rgba(0, 0, 0, 0.1) transparent transparent transparent;
+    border-color: rgba(0, 0, 0, 0.08) transparent transparent transparent;
     top: 1px; }
-  .qing-popover.direction-top-left .arrow-shadow-1, .qing-popover.direction-top-right .arrow-shadow-1, .qing-popover.direction-top-center .arrow-shadow-1 {
-    border-color: rgba(0, 0, 0, 0.05) transparent transparent transparent;
-    top: 2px; }
   .qing-popover.direction-bottom-left .qing-popover-arrow, .qing-popover.direction-bottom-right .qing-popover-arrow, .qing-popover.direction-bottom-center .qing-popover-arrow {
     top: -16px; }
   .qing-popover.direction-bottom-left .arrow-basic, .qing-popover.direction-bottom-right .arrow-basic, .qing-popover.direction-bottom-center .arrow-basic {
     border-color: transparent transparent #fff transparent;
     top: 1px; }
   .qing-popover.direction-bottom-left .arrow-border, .qing-popover.direction-bottom-right .arrow-border, .qing-popover.direction-bottom-center .arrow-border {
-    border-color: transparent transparent #c3c3c3 transparent;
+    border-color: transparent transparent #ddd transparent;
     top: 0px; }
   .qing-popover.direction-bottom-left .arrow-shadow-0, .qing-popover.direction-bottom-right .arrow-shadow-0, .qing-popover.direction-bottom-center .arrow-shadow-0 {
-    border-color: transparent transparent rgba(0, 0, 0, 0.1) transparent;
+    border-color: transparent transparent rgba(0, 0, 0, 0.08) transparent;
     top: -1px; }
-  .qing-popover.direction-bottom-left .arrow-shadow-1, .qing-popover.direction-bottom-right .arrow-shadow-1, .qing-popover.direction-bottom-center .arrow-shadow-1 {
-    border-color: transparent transparent rgba(0, 0, 0, 0.05) transparent;
-    top: -2px; }
   .qing-popover.direction-top-left .qing-popover-arrow, .qing-popover.direction-bottom-left .qing-popover-arrow {
     right: 16px; }
   .qing-popover.direction-top-right .qing-popover-arrow, .qing-popover.direction-bottom-right .qing-popover-arrow {
