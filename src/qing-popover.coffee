@@ -27,6 +27,7 @@ class QingPopover extends QingModule
     @_render()
     @_bind()
     @refresh()
+    @trigger 'ready'
 
   _render: ->
     @pointTo.addClass 'qing-popover-point-to'

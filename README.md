@@ -20,7 +20,7 @@ QingPopover is a ui component inherited from QingModule.
 
 ```js
 var qingPopover = new QingPopover({
-  el: '.qing-popover'
+  pointTo: '.point-to'
 });
 
 qingPopover.on('ready', function(e) {
@@ -30,11 +30,42 @@ qingPopover.on('ready', function(e) {
 
 ## Options
 
-__el__
+__pointTo__
 
 Selector/Element/jQuery Object, required, specify the html element.
 
+__cls__
+
+html class add to popover element
+
+__content__
+
+popover content
+
+__direction__
+
+specific popover direction instead of auto calculate
+
+__offset__
+
+offset distance between pointTo and popover
+
+__align__
+
+object, popover arrow point to which part of pointTo target
+
+```
+{
+  horizental: 'center'
+  vertical: 'middle'
+}
+```
+
 ## Methods
+
+__refresh__()
+
+update the popover position.
 
 __destroy__ ()
 

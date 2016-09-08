@@ -115,7 +115,7 @@ class Position extends QingModule
 
     # set align
     if /top|bottom/.test @directions[0]
-      switch @opts.align
+      switch @opts.align.horizental
         when 'left'
           left -= pointToWidth / 2
         when 'right'
@@ -123,7 +123,7 @@ class Position extends QingModule
 
     # set vertical align
     if /left|right/.test @directions[0]
-      switch @opts.verticalAlign
+      switch @opts.align.vertical
         when 'top'
           top -= pointToHeight / 2
         when 'bottom'

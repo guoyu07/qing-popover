@@ -189,7 +189,7 @@ Position = (function(superClass) {
         top = pointToOffset.top + pointToHeight / 2 - popoverHeight / 2;
     }
     if (/top|bottom/.test(this.directions[0])) {
-      switch (this.opts.align) {
+      switch (this.opts.align.horizental) {
         case 'left':
           left -= pointToWidth / 2;
           break;
@@ -198,7 +198,7 @@ Position = (function(superClass) {
       }
     }
     if (/left|right/.test(this.directions[0])) {
-      switch (this.opts.verticalAlign) {
+      switch (this.opts.align.vertical) {
         case 'top':
           top -= pointToHeight / 2;
           break;
@@ -313,6 +313,7 @@ QingPopover = (function(superClass) {
     this._render();
     this._bind();
     this.refresh();
+    this.trigger('ready');
   }
 
   QingPopover.prototype._render = function() {
