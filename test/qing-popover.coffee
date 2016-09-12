@@ -147,5 +147,5 @@ describe 'Position', ->
     position.update()
     newPos = position.position
 
-    expect(position.direction).to.equal('direction-right-top')
-    expect(newPos.left - oldPos.left).to.equal(10)
+    expect(position.direction).to.equal('direction-bottom-center')
+    expect(newPos.top - oldPos.top).to.equal(10)

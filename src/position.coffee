@@ -46,29 +46,34 @@ class Position extends QingModule
       bottom: @doc.scrollTop() + @win.height() - pointToOffset.top - pointToH
     }
 
-  _getSpacesCoefficient: ->
+  _getDirections: ->
+    return @opts.direction.split('-') if @opts.direction
+
     spaces = @_getSpaces()
 
-    [{
-      direction: 'left'
-      beyond: Math.min(@popover.outerWidth() + @arrow.outerWidth() - spaces.left, 0) * @popover.outerHeight() + Math.min(@popover.outerHeight() - @win.height(), 0) * @popover.outerWidth()
-    }, {
+    spaceCoefficient = [{
       direction: 'right'
-      beyond: Math.min(@popover.outerWidth() + @arrow.outerWidth() - spaces.right, 0) * @popover.outerHeight() + Math.min(@popover.outerHeight() - @win.height(), 0) * @popover.outerWidth()
+      beyond: Math.max(@popover.outerWidth() + @arrow.outerWidth() - spaces.right, 0) * @popover.outerHeight() + Math.max(@popover.outerHeight() - @win.height(), 0) * @popover.outerWidth()
     }, {
-      direction: 'top'
-      beyond: Math.min(@popover.outerHeight() + @arrow.outerHeight() - spaces.top, 0) * @popover.outerWidth() + Math.min(@popover.outerWidth() - @win.width(), 0) * @popover.outerHeight()
+      direction: 'left'
+      beyond: Math.max(@popover.outerWidth() + @arrow.outerWidth() - spaces.left, 0) * @popover.outerHeight() + Math.max(@popover.outerHeight() - @win.height(), 0) * @popover.outerWidth()
     }, {
       direction: 'bottom'
-      beyond: Math.min(@popover.outerHeight() + @arrow.outerHeight() - spaces.top, 0) * @popover.outerWidth() + Math.min(@popover.outerWidth() - @win.width(), 0) * @popover.outerHeight()
+      beyond: Math.max(@popover.outerHeight() + @arrow.outerHeight() - spaces.bottom, 0) * @popover.outerWidth() + Math.max(@popover.outerWidth() - @win.width(), 0) * @popover.outerHeight()
+    }, {
+      direction: 'top'
+      beyond: Math.max(@popover.outerHeight() + @arrow.outerHeight() - spaces.top, 0) * @popover.outerWidth() + Math.max(@popover.outerWidth() - @win.width(), 0) * @popover.outerHeight()
     }].sort (a, b) ->
       return 1 if a.beyond > b.beyond
       -1
 
-  _getDirections: ->
-    return @opts.direction.split('-') if @opts.direction
-    directions = [@_getSpacesCoefficient()[0].direction, 'top']
-    directions[1] = 'center' if /top|bottom/.test directions[0]
+    directions = [spaceCoefficient[0].direction]
+
+    if /top|bottom/.test directions[0]
+      directions[1] = 'center'
+    else if /left|right/.test directions[0]
+      directions[1] = if spaces.top > spaces.bottom then 'top' else 'bottom'
+
     directions
 
   update: ->

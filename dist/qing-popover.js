@@ -6,7 +6,7 @@
  * Released under the MIT license
  * http://mycolorway.github.io/qing-popover/license.html
  *
- * Date: 2016-09-8
+ * Date: 2016-09-11
  */
 ;(function(root, factory) {
   if (typeof module === 'object' && module.exports) {
@@ -102,22 +102,25 @@ Position = (function(superClass) {
     };
   };
 
-  Position.prototype._getSpacesCoefficient = function() {
-    var spaces;
+  Position.prototype._getDirections = function() {
+    var directions, spaceCoefficient, spaces;
+    if (this.opts.direction) {
+      return this.opts.direction.split('-');
+    }
     spaces = this._getSpaces();
-    return [
+    spaceCoefficient = [
       {
-        direction: 'left',
-        beyond: Math.min(this.popover.outerWidth() + this.arrow.outerWidth() - spaces.left, 0) * this.popover.outerHeight() + Math.min(this.popover.outerHeight() - this.win.height(), 0) * this.popover.outerWidth()
-      }, {
         direction: 'right',
-        beyond: Math.min(this.popover.outerWidth() + this.arrow.outerWidth() - spaces.right, 0) * this.popover.outerHeight() + Math.min(this.popover.outerHeight() - this.win.height(), 0) * this.popover.outerWidth()
+        beyond: Math.max(this.popover.outerWidth() + this.arrow.outerWidth() - spaces.right, 0) * this.popover.outerHeight() + Math.max(this.popover.outerHeight() - this.win.height(), 0) * this.popover.outerWidth()
       }, {
-        direction: 'top',
-        beyond: Math.min(this.popover.outerHeight() + this.arrow.outerHeight() - spaces.top, 0) * this.popover.outerWidth() + Math.min(this.popover.outerWidth() - this.win.width(), 0) * this.popover.outerHeight()
+        direction: 'left',
+        beyond: Math.max(this.popover.outerWidth() + this.arrow.outerWidth() - spaces.left, 0) * this.popover.outerHeight() + Math.max(this.popover.outerHeight() - this.win.height(), 0) * this.popover.outerWidth()
       }, {
         direction: 'bottom',
-        beyond: Math.min(this.popover.outerHeight() + this.arrow.outerHeight() - spaces.top, 0) * this.popover.outerWidth() + Math.min(this.popover.outerWidth() - this.win.width(), 0) * this.popover.outerHeight()
+        beyond: Math.max(this.popover.outerHeight() + this.arrow.outerHeight() - spaces.bottom, 0) * this.popover.outerWidth() + Math.max(this.popover.outerWidth() - this.win.width(), 0) * this.popover.outerHeight()
+      }, {
+        direction: 'top',
+        beyond: Math.max(this.popover.outerHeight() + this.arrow.outerHeight() - spaces.top, 0) * this.popover.outerWidth() + Math.max(this.popover.outerWidth() - this.win.width(), 0) * this.popover.outerHeight()
       }
     ].sort(function(a, b) {
       if (a.beyond > b.beyond) {
@@ -125,16 +128,11 @@ Position = (function(superClass) {
       }
       return -1;
     });
-  };
-
-  Position.prototype._getDirections = function() {
-    var directions;
-    if (this.opts.direction) {
-      return this.opts.direction.split('-');
-    }
-    directions = [this._getSpacesCoefficient()[0].direction, 'top'];
+    directions = [spaceCoefficient[0].direction];
     if (/top|bottom/.test(directions[0])) {
       directions[1] = 'center';
+    } else if (/left|right/.test(directions[0])) {
+      directions[1] = spaces.top > spaces.bottom ? 'top' : 'bottom';
     }
     return directions;
   };
@@ -296,6 +294,7 @@ QingPopover = (function(superClass) {
     direction: null,
     arrowOffset: 16,
     offset: null,
+    autohide: true,
     align: {
       horizental: 'center',
       vertical: 'middle'

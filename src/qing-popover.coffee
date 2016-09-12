@@ -10,6 +10,7 @@ class QingPopover extends QingModule
     direction: null
     arrowOffset: 16
     offset: null
+    autohide: true
     align:
       horizental: 'center'
       vertical: 'middle'
