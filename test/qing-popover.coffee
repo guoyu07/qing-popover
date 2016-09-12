@@ -1,5 +1,5 @@
 QingPopover = require '../src/qing-popover'
-Popover = require '../src/popover'
+Direction = require '../src/direction'
 Position = require '../src/position'
 expect = chai.expect
 
@@ -82,21 +82,21 @@ describe 'autohide', ->
       content: 'test'
       autohide: true
 
-    qingPopover.popover.el.trigger('mousedown')
+    qingPopover.popover.trigger('mousedown')
     expect($('body > .qing-popover').length).to.equal(1)
 
     $(document).mousedown()
     expect($('body > .qing-popover').length).to.equal(0)
 
-describe 'Position', ->
+describe 'Direction', ->
 
   $pointTo = null
   $popover = null
-  position = null
+  direction = null
 
   before ->
     $pointTo = $('<span class="test-el">click me</span>').appendTo 'body'
-    $popover = $(Popover._tpl).find('.qing-popover-content').append('hello')
+    $popover = $(QingPopover._tpl).find('.qing-popover-content').append('hello')
                               .end().appendTo 'body'
 
   after ->
@@ -106,46 +106,98 @@ describe 'Position', ->
     $popover = null
 
   afterEach ->
-    position = null
+    direction = null
 
   it 'should throw error on specific wrong direction', ->
-    position = new Position
+    direction = new Direction
       pointTo: $pointTo
       popover: $popover
       direction: 'xxx-center'
 
-    spy = sinon.spy position, 'update'
+    spy = sinon.spy direction, 'update'
 
     try
-      position.update()
+      direction.update()
     catch e
 
     expect(spy.threw()).to.be.true
 
   it 'should using specific direction', ->
-    position = new Position
+    direction = new Direction
       pointTo: $pointTo
       popover: $popover
       direction: 'top-center'
 
-    position.update()
-    expect(position.direction).to.equal 'direction-top-center'
+    direction.update()
+    expect(direction.toString()).to.equal 'direction-top-center'
 
-  it 'should offset', ->
-    position = new Position
+  it 'should auto calculate direction without specific direction', ->
+    $popover.width(200).height(300)
+    $pointTo.css
+      position: 'absolute'
+      top: 40
+      left: 40
+
+    direction = new Direction
       pointTo: $pointTo
       popover: $popover
 
-    position.update()
-    oldPos = position.position
+    direction.update()
+    expect(direction.toString()).to.equal 'direction-right-bottom'
 
-    position = new Position
+    $pointTo.css
+      top: 40
+      left: 'auto'
+      right: 40
+
+    direction.update()
+    expect(direction.toString()).to.equal 'direction-left-bottom'
+
+    $pointTo.css
+      top: 'auto'
+      bottom: 40
+      right: 40
+
+    direction.update()
+    expect(direction.toString()).to.equal 'direction-left-top'
+
+    $pointTo.css
+      left: 40
+      bottom: 40
+      right: 'auto'
+
+    direction.update()
+    expect(direction.toString()).to.equal 'direction-right-top'
+
+describe 'Position', ->
+
+  $pointTo = null
+  $popover = null
+
+  before ->
+    $pointTo = $('<span class="test-el">click me</span>').appendTo 'body'
+    $popover = $(QingPopover._tpl).find('.qing-popover-content').append('hello')
+                              .end().appendTo 'body'
+
+  after ->
+    $pointTo.remove()
+    $popover.remove()
+    $pointTo = null
+    $popover = null
+
+  it 'should offset', ->
+    oldPosition = new Position
+      pointTo: $pointTo
+      popover: $popover
+
+    oldPosition.update ['bottom', 'center']
+
+    newPosition = new Position
       pointTo: $pointTo
       popover: $popover
       offset: 10
 
-    position.update()
-    newPos = position.position
+    newPosition.update ['bottom', 'center']
 
-    expect(position.direction).to.equal('direction-bottom-center')
-    expect(newPos.top - oldPos.top).to.equal(10)
+    expect(newPosition.opts.offset).to.equal(10)
+    expect(newPosition.top - oldPosition.top).to.equal(10)

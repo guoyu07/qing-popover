@@ -3,181 +3,84 @@ class Position extends QingModule
   @opts:
     pointTo: null
     popover: null
-    direction: null
-    arrowOffset: 16
-    offset: null
+    offset: 0
     align:
       horizental: 'center'
       vertical: 'middle'
 
-  @_directions: [
-    "direction-left-top"
-    "direction-left-middle"
-    "direction-left-bottom"
-    "direction-right-top"
-    "direction-right-bottom"
-    "direction-right-middle"
-    "direction-top-left"
-    "direction-top-right"
-    "direction-top-center"
-    "direction-bottom-left"
-    "direction-bottom-right"
-    "direction-bottom-center"
-  ]
-
   constructor: (opts) ->
     super
     @opts = $.extend {}, Position.opts, @opts
+
     @pointTo = @opts.pointTo
     @popover = @opts.popover
-    @arrow = @opts.popover.find('.qing-popover-arrow')
-    @doc = $ document
-    @win = $ window
+    @top = 0
+    @left = 0
 
-  _getSpaces: ->
-    pointToOffset = @pointTo.offset()
-    pointToW = @pointTo.outerWidth()
-    pointToH = @pointTo.outerHeight()
+  update: (directions) ->
+    @directions = directions
 
-    {
-      left: pointToOffset.left - @doc.scrollLeft()
-      right: @doc.scrollLeft() + @win.width() - pointToOffset.left - pointToW
-      top: pointToOffset.top - @doc.scrollTop()
-      bottom: @doc.scrollTop() + @win.height() - pointToOffset.top - pointToH
-    }
+    @_position()
+    @_adjustAlign()
+    @_adjustOffset()
 
-  _getDirections: ->
-    return @opts.direction.split('-') if @opts.direction
-
-    spaces = @_getSpaces()
-
-    spaceCoefficient = [{
-      direction: 'right'
-      beyond: Math.max(@popover.outerWidth() + @arrow.outerWidth() - spaces.right, 0) * @popover.outerHeight() + Math.max(@popover.outerHeight() - @win.height(), 0) * @popover.outerWidth()
-    }, {
-      direction: 'left'
-      beyond: Math.max(@popover.outerWidth() + @arrow.outerWidth() - spaces.left, 0) * @popover.outerHeight() + Math.max(@popover.outerHeight() - @win.height(), 0) * @popover.outerWidth()
-    }, {
-      direction: 'bottom'
-      beyond: Math.max(@popover.outerHeight() + @arrow.outerHeight() - spaces.bottom, 0) * @popover.outerWidth() + Math.max(@popover.outerWidth() - @win.width(), 0) * @popover.outerHeight()
-    }, {
-      direction: 'top'
-      beyond: Math.max(@popover.outerHeight() + @arrow.outerHeight() - spaces.top, 0) * @popover.outerWidth() + Math.max(@popover.outerWidth() - @win.width(), 0) * @popover.outerHeight()
-    }].sort (a, b) ->
-      return 1 if a.beyond > b.beyond
-      -1
-
-    directions = [spaceCoefficient[0].direction]
-
-    if /top|bottom/.test directions[0]
-      directions[1] = 'center'
-    else if /left|right/.test directions[0]
-      directions[1] = if spaces.top > spaces.bottom then 'top' else 'bottom'
-
-    directions
-
-  update: ->
-    @directions = @_getDirections()
-    @direction = "direction-#{ @directions.join('-') }"
-    unless @direction in Position._directions
-      throw new Error '[QingPopover] - direction is not valid'
-
-    top = 0
-    left = 0
-
+  _position: ->
     pointToOffset = @pointTo.offset()
     pointToWidth  = @pointTo.outerWidth()
     pointToHeight = @pointTo.outerHeight()
     popoverWidth  = @popover.outerWidth()
     popoverHeight = @popover.outerHeight()
-    arrowWidth  = @arrow.width()
-    arrowHeight = @arrow.height()
-    arrowOffset = @opts.arrowOffset
 
     switch @directions[0]
       when 'left'
-        left = pointToOffset.left - arrowWidth - popoverWidth
+        @left = pointToOffset.left - popoverWidth
       when 'right'
-        left = pointToOffset.left + pointToWidth + arrowWidth
+        @left = pointToOffset.left + pointToWidth
       when 'top'
-        top = pointToOffset.top - arrowHeight - popoverHeight
+        @top = pointToOffset.top - popoverHeight
       when 'bottom'
-        top = pointToOffset.top + pointToHeight + arrowHeight
+        @top = pointToOffset.top + pointToHeight
 
     switch @directions[1]
       when 'top'
-        top = pointToOffset.top + pointToHeight / 2 + arrowHeight / 2 + arrowOffset - popoverHeight
+        @top = pointToOffset.top - popoverHeight + pointToHeight / 2
       when 'bottom'
-        top = pointToOffset.top + pointToHeight / 2 - arrowHeight / 2 - arrowOffset
+        @top = pointToOffset.top + pointToHeight / 2
       when 'left'
-        left = pointToOffset.left + pointToWidth / 2  + arrowWidth / 2 + arrowOffset - popoverWidth
+        @left = pointToOffset.left - popoverWidth + pointToWidth / 2
       when 'right'
-        left = pointToOffset.left + pointToWidth / 2  - arrowWidth / 2 - arrowOffset
+        @left = pointToOffset.left + pointToWidth / 2
       when 'center'
-        left = pointToOffset.left + pointToWidth / 2  - popoverWidth / 2
+        @left = pointToOffset.left + pointToWidth / 2  - popoverWidth / 2
       when 'middle'
-        top = pointToOffset.top + pointToHeight / 2  - popoverHeight / 2
+        @top = pointToOffset.top + pointToHeight / 2  - popoverHeight / 2
 
-    # set align
+  _adjustAlign: ->
     if /top|bottom/.test @directions[0]
       switch @opts.align.horizental
         when 'left'
-          left -= pointToWidth / 2
+          @left -= @pointTo.width() / 2
         when 'right'
-          left += pointToWidth / 2
+          @left += @pointTo.width() / 2
 
-    # set vertical align
     if /left|right/.test @directions[0]
       switch @opts.align.vertical
         when 'top'
-          top -= pointToHeight / 2
+          @top -= @pointTo.height() / 2
         when 'bottom'
-          top += pointToHeight / 2
+          @top += @pointTo.height() / 2
 
-    @position = @_autoAdjustPosition @_adjustOffset({top: top, left: left})
+  _adjustOffset: ->
+    return unless @opts.offset
 
-  _autoAdjustPosition: (position)->
-    left = position.left
-    top = position.top
-
-    scrollTop  = @doc.scrollTop()
-    scrollLeft = @doc.scrollLeft()
-    arrowOffset = @opts.arrowOffset
-
-    if /top|bottom/.test(@directions[0]) and left < scrollLeft
-      delta = scrollLeft - left
-      left += delta
-
-      switch @directions[1]
-        when 'left'
-          @arrow.css('right', arrowOffset + delta)
-        when 'right'
-          @arrow.css('left', Math.max(arrowOffset - delta, arrowOffset))
-        else
-          @arrow.css('marginLeft', -arrowOffset / 2 - delta)
-
-    if /left|right/.test(@directions[0]) and top < scrollTop
-      delta = scrollTop - top
-      top += delta
-
-      switch @directions[1]
-        when 'top'
-          @arrow.css('bottom', arrowOffset + delta)
-        when 'bottom'
-          @arrow.css('top', Math.max(arrowOffset - delta, arrowOffset))
-        else
-          @arrow.css('marginTop', -arrowOffset / 2 - delta)
-
-    {top: top, left: left}
-
-  _adjustOffset: (position) ->
-    return position unless @opts.offset
-
-    offset = @opts.offset
-    offset = -offset if /top|left/.test @directions[0]
-
-    position.top += offset if /top|bottom/.test @directions[0]
-    position.left += offset if /left|right/.test @directions[0]
-    position
+    switch @directions[0]
+      when 'top'
+        @top -= @opts.offset
+      when 'bottom'
+        @top += @opts.offset
+      when 'left'
+        @left -= @opts.offset
+      when 'right'
+        @left += @opts.offset
 
 module.exports = Position
