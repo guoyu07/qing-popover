@@ -34,6 +34,10 @@ __pointTo__
 
 Selector/Element/jQuery Object, required, specify the html element.
 
+__boundarySelector__
+
+specific boundary element to calculate popover direction
+
 __cls__
 
 html class add to popover element

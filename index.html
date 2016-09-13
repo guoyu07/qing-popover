@@ -9,8 +9,22 @@
 	<style>
 		.test-el {
 			position: absolute;
-			top: 200px;
-			left: 200px;
+			top: 20px;
+			right: 20px;
+		}
+
+		.box {
+			width: 500px;
+			height: 300px;
+			border: 1px solid red;
+			position: relative;
+			margin: 80px 0 0 80px;
+		}
+
+		.box .test-box-el {
+			position: absolute;
+			right: 20px;
+			bottom: 20px;
 		}
 	</style>
 
@@ -19,10 +33,17 @@
 	<script type="text/javascript" src="dist/qing-popover.js"></script>
 	<script type="text/javascript">
 		$(function() {
-			$('.test-el').on('click', function() {
+			$('.test-el').on('click', function(e) {
 			  var qingPopover = new QingPopover({
-	        pointTo: '.test-el',
-					// direction: 'top-center',
+	        pointTo: e.target,
+					content: '<p>hello</p><p>hello</p><p>hello</p><p>hello</p><p>hello</p><p>hello</p>'
+	      });
+			});
+
+			$('.test-box-el').on('click', function(e) {
+			  var qingPopover = new QingPopover({
+	        pointTo: e.target,
+					boundarySelector: '.box',
 					content: '<p>hello</p><p>hello</p><p>hello</p><p>hello</p><p>hello</p><p>hello</p>'
 	      });
 			});
@@ -32,5 +53,9 @@
 </head>
 <body>
   <span class="test-el">click me</span>
+
+	<div class="box">
+	  <span class="test-box-el">click me</span>
+	</div>
 </body>
 </html>

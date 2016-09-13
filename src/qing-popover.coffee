@@ -54,6 +54,7 @@ class QingPopover extends QingModule
     @direction = new Direction
       pointTo: @pointTo
       popover: @popover
+      boundarySelector: @opts.boundarySelector
       direction: @opts.direction
 
     @position = new Position
