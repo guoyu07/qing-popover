@@ -48,8 +48,7 @@ class QingPopover extends QingModule
     @popover.data 'qingPopover', @
       .appendTo 'body'
 
-    @pointTo.addClass 'qing-popover-point-to'
-      .data 'qingPopover', @
+    @pointTo.data 'qingPopover', @
 
     @direction = new Direction
       pointTo: @pointTo
@@ -125,8 +124,7 @@ class QingPopover extends QingModule
     $(document).off '.qing-popover'
     @pointTo.off '.qing-popover'
     @popover.remove()
-    @pointTo.removeClass 'qing-popover-point-to'
-      .removeData 'qingPopover'
+    @pointTo.removeData 'qingPopover'
 
   @destroyAll: ->
     $('.qing-popover').each ->
