@@ -5,6 +5,8 @@ class QingPopover extends QingModule
 
   @opts:
     pointTo: null
+    appendTo: 'body'
+    boundarySelector: null
     cls: null
     content: null
     direction: null
@@ -46,7 +48,7 @@ class QingPopover extends QingModule
     @arrow = @popover.find('.qing-popover-arrow')
     @content = @popover.find('.qing-popover-content').append @opts.content
     @popover.data 'qingPopover', @
-      .appendTo 'body'
+      .appendTo @opts.appendTo
 
     @pointTo.data 'qingPopover', @
 

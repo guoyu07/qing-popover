@@ -6,7 +6,7 @@
  * Released under the MIT license
  * http://mycolorway.github.io/qing-popover/license.html
  *
- * Date: 2016-09-14
+ * Date: 2016-09-17
  */
 ;(function(root, factory) {
   if (typeof module === 'object' && module.exports) {
@@ -246,6 +246,8 @@ QingPopover = (function(superClass) {
 
   QingPopover.opts = {
     pointTo: null,
+    appendTo: 'body',
+    boundarySelector: null,
     cls: null,
     content: null,
     direction: null,
@@ -279,7 +281,7 @@ QingPopover = (function(superClass) {
     this.popover = $(QingPopover._tpl).addClass(this.opts.cls);
     this.arrow = this.popover.find('.qing-popover-arrow');
     this.content = this.popover.find('.qing-popover-content').append(this.opts.content);
-    this.popover.data('qingPopover', this).appendTo('body');
+    this.popover.data('qingPopover', this).appendTo(this.opts.appendTo);
     this.pointTo.data('qingPopover', this);
     this.direction = new Direction({
       pointTo: this.pointTo,
