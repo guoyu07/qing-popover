@@ -23,11 +23,6 @@ var qingPopover = new QingPopover({
   pointTo: '.point-to'
 });
 
-qingPopover.on('ready', function(e) {
-  // do something
-});
-```
-
 ## Options
 
 __pointTo__
@@ -74,12 +69,6 @@ update the popover position.
 __destroy__ ()
 
 Destroy component, restore element to original state.
-
-## Events
-
-__ready__ (event)
-
-Triggered after initialization.
 
 ## Installation
 

@@ -29,19 +29,20 @@ class QingPopover extends QingModule
     </div>
   """
 
-  constructor: (opts) ->
+  _setOptions: (opts) ->
     super
-    @opts = $.extend {}, QingPopover.opts, @opts
+    $.extend @opts, QingPopover.opts, opts
 
+  _init: ->
+    @opts = $.extend {}, QingPopover.opts, @opts
     @pointTo = $ @opts.pointTo
     unless @pointTo.length > 0
-      throw new Error 'QingPopover: option el is required'
+      throw new Error 'QingPopover: option pointTo is required'
 
     QingPopover.destroyAll()
     @_render()
     @_bind()
     @refresh()
-    @trigger 'ready'
 
   _render: ->
     @popover = $(QingPopover._tpl).addClass @opts.cls

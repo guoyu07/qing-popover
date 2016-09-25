@@ -6,7 +6,7 @@
  * Released under the MIT license
  * http://mycolorway.github.io/qing-popover/license.html
  *
- * Date: 2016-09-17
+ * Date: 2016-09-24
  */
 ;(function(root, factory) {
   if (typeof module === 'object' && module.exports) {
@@ -244,6 +244,10 @@ Position = require('./position.coffee');
 QingPopover = (function(superClass) {
   extend(QingPopover, superClass);
 
+  function QingPopover() {
+    return QingPopover.__super__.constructor.apply(this, arguments);
+  }
+
   QingPopover.opts = {
     pointTo: null,
     appendTo: 'body',
@@ -263,19 +267,22 @@ QingPopover = (function(superClass) {
 
   QingPopover._tpl = "<div class=\"qing-popover\">\n  <div class=\"qing-popover-content\"></div>\n  <div class=\"qing-popover-arrow\">\n    <i class=\"arrow arrow-shadow-0\"></i>\n    <i class=\"arrow arrow-border\"></i>\n    <i class=\"arrow arrow-basic\"></i>\n  </div>\n</div>";
 
-  function QingPopover(opts) {
-    QingPopover.__super__.constructor.apply(this, arguments);
+  QingPopover.prototype._setOptions = function(opts) {
+    QingPopover.__super__._setOptions.apply(this, arguments);
+    return $.extend(this.opts, QingPopover.opts, opts);
+  };
+
+  QingPopover.prototype._init = function() {
     this.opts = $.extend({}, QingPopover.opts, this.opts);
     this.pointTo = $(this.opts.pointTo);
     if (!(this.pointTo.length > 0)) {
-      throw new Error('QingPopover: option el is required');
+      throw new Error('QingPopover: option pointTo is required');
     }
     QingPopover.destroyAll();
     this._render();
     this._bind();
-    this.refresh();
-    this.trigger('ready');
-  }
+    return this.refresh();
+  };
 
   QingPopover.prototype._render = function() {
     this.popover = $(QingPopover._tpl).addClass(this.opts.cls);
