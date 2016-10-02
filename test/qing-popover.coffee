@@ -82,7 +82,7 @@ describe 'autohide', ->
       content: 'test'
       autohide: true
 
-    qingPopover.popover.trigger('mousedown')
+    qingPopover.el.trigger('mousedown')
     expect($('body > .qing-popover').length).to.equal(1)
 
     $(document).mousedown()

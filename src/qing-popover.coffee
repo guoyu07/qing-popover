@@ -45,23 +45,23 @@ class QingPopover extends QingModule
     @refresh()
 
   _render: ->
-    @popover = $(QingPopover._tpl).addClass @opts.cls
-    @arrow = @popover.find('.qing-popover-arrow')
-    @content = @popover.find('.qing-popover-content').append @opts.content
-    @popover.data 'qingPopover', @
+    @el = $(QingPopover._tpl).addClass @opts.cls
+    @arrow = @el.find('.qing-popover-arrow')
+    @content = @el.find('.qing-popover-content').append @opts.content
+    @el.data 'qingPopover', @
       .appendTo @opts.appendTo
 
     @pointTo.data 'qingPopover', @
 
     @direction = new Direction
       pointTo: @pointTo
-      popover: @popover
+      popover: @el
       boundarySelector: @opts.boundarySelector
       direction: @opts.direction
 
     @position = new Position
       pointTo: @pointTo
-      popover: @popover
+      popover: @el
       align: @opts.align
       offset: @opts.offset
 
@@ -74,13 +74,13 @@ class QingPopover extends QingModule
         target = $ e.target
 
         return if target.is(@pointTo) or
-        @popover.has(target).length or
-        target.is(@popover)
+        @el.has(target).length or
+        target.is(@el)
 
         @destroy()
 
   refresh: ->
-    @popover.removeClass Direction._directions.join(' ')
+    @el.removeClass Direction._directions.join(' ')
     @arrow.css
       top: ''
       bottom: ''
@@ -89,7 +89,7 @@ class QingPopover extends QingModule
 
     @direction.update()
 
-    @popover.addClass(@direction.toString())
+    @el.addClass(@direction.toString())
       .css(@_positionWithArrow())
 
   _positionWithArrow: ->
@@ -126,7 +126,7 @@ class QingPopover extends QingModule
     $(window).off '.qing-popover'
     $(document).off '.qing-popover'
     @pointTo.off '.qing-popover'
-    @popover.remove()
+    @el.remove()
     @pointTo.removeData 'qingPopover'
 
   @destroyAll: ->

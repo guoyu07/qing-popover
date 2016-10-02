@@ -6,7 +6,7 @@
  * Released under the MIT license
  * http://mycolorway.github.io/qing-popover/license.html
  *
- * Date: 2016-09-24
+ * Date: 2016-10-2
  */
 ;(function(root, factory) {
   if (typeof module === 'object' && module.exports) {
@@ -285,20 +285,20 @@ QingPopover = (function(superClass) {
   };
 
   QingPopover.prototype._render = function() {
-    this.popover = $(QingPopover._tpl).addClass(this.opts.cls);
-    this.arrow = this.popover.find('.qing-popover-arrow');
-    this.content = this.popover.find('.qing-popover-content').append(this.opts.content);
-    this.popover.data('qingPopover', this).appendTo(this.opts.appendTo);
+    this.el = $(QingPopover._tpl).addClass(this.opts.cls);
+    this.arrow = this.el.find('.qing-popover-arrow');
+    this.content = this.el.find('.qing-popover-content').append(this.opts.content);
+    this.el.data('qingPopover', this).appendTo(this.opts.appendTo);
     this.pointTo.data('qingPopover', this);
     this.direction = new Direction({
       pointTo: this.pointTo,
-      popover: this.popover,
+      popover: this.el,
       boundarySelector: this.opts.boundarySelector,
       direction: this.opts.direction
     });
     return this.position = new Position({
       pointTo: this.pointTo,
-      popover: this.popover,
+      popover: this.el,
       align: this.opts.align,
       offset: this.opts.offset
     });
@@ -315,7 +315,7 @@ QingPopover = (function(superClass) {
         return function(e) {
           var target;
           target = $(e.target);
-          if (target.is(_this.pointTo) || _this.popover.has(target).length || target.is(_this.popover)) {
+          if (target.is(_this.pointTo) || _this.el.has(target).length || target.is(_this.el)) {
             return;
           }
           return _this.destroy();
@@ -325,7 +325,7 @@ QingPopover = (function(superClass) {
   };
 
   QingPopover.prototype.refresh = function() {
-    this.popover.removeClass(Direction._directions.join(' '));
+    this.el.removeClass(Direction._directions.join(' '));
     this.arrow.css({
       top: '',
       bottom: '',
@@ -333,7 +333,7 @@ QingPopover = (function(superClass) {
       right: ''
     });
     this.direction.update();
-    return this.popover.addClass(this.direction.toString()).css(this._positionWithArrow());
+    return this.el.addClass(this.direction.toString()).css(this._positionWithArrow());
   };
 
   QingPopover.prototype._positionWithArrow = function() {
@@ -376,7 +376,7 @@ QingPopover = (function(superClass) {
     $(window).off('.qing-popover');
     $(document).off('.qing-popover');
     this.pointTo.off('.qing-popover');
-    this.popover.remove();
+    this.el.remove();
     return this.pointTo.removeData('qingPopover');
   };
 
