@@ -128,6 +128,7 @@ class QingPopover extends QingModule
     @pointTo.off '.qing-popover'
     @el.remove()
     @pointTo.removeData 'qingPopover'
+    @trigger "destroy"
 
   @destroyAll: ->
     $('.qing-popover').each ->
