@@ -6,7 +6,7 @@
  * Released under the MIT license
  * http://mycolorway.github.io/qing-popover/license.html
  *
- * Date: 2016-10-5
+ * Date: 2016-10-15
  */
 ;(function(root, factory) {
   if (typeof module === 'object' && module.exports) {
@@ -373,6 +373,7 @@ QingPopover = (function(superClass) {
   };
 
   QingPopover.prototype.destroy = function() {
+    this.trigger('before-destroy');
     $(window).off('.qing-popover');
     $(document).off('.qing-popover');
     this.pointTo.off('.qing-popover');

@@ -123,6 +123,7 @@ class QingPopover extends QingModule
     pos
 
   destroy: ->
+    @trigger 'before-destroy'
     $(window).off '.qing-popover'
     $(document).off '.qing-popover'
     @pointTo.off '.qing-popover'
