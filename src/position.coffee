@@ -8,10 +8,11 @@ class Position extends QingModule
       horizental: 'center'
       vertical: 'middle'
 
-  constructor: (opts) ->
+  _setOptions: (opts) ->
     super
-    @opts = $.extend {}, Position.opts, @opts
+    $.extend @opts, Position.opts, opts
 
+  _init: ->
     @pointTo = @opts.pointTo
     @popover = @opts.popover
     @top = 0

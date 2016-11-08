@@ -34,7 +34,6 @@ class QingPopover extends QingModule
     $.extend @opts, QingPopover.opts, opts
 
   _init: ->
-    @opts = $.extend {}, QingPopover.opts, @opts
     @pointTo = $ @opts.pointTo
     unless @pointTo.length > 0
       throw new Error 'QingPopover: option pointTo is required'

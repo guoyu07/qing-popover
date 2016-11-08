@@ -132,7 +132,7 @@ describe 'Direction', ->
     expect(direction.toString()).to.equal 'direction-top-center'
 
   it 'should auto calculate direction without specific direction', ->
-    $popover.width(200).height(300)
+    $popover.width(300).height(200)
     $pointTo.css
       position: 'absolute'
       top: 40
@@ -143,7 +143,7 @@ describe 'Direction', ->
       popover: $popover
 
     direction.update()
-    expect(direction.toString()).to.equal 'direction-right-bottom'
+    expect(direction.toString()).to.equal 'direction-bottom-right'
 
     $pointTo.css
       top: 40
@@ -151,7 +151,7 @@ describe 'Direction', ->
       right: 40
 
     direction.update()
-    expect(direction.toString()).to.equal 'direction-left-bottom'
+    expect(direction.toString()).to.equal 'direction-bottom-left'
 
     $pointTo.css
       top: 'auto'
@@ -159,7 +159,7 @@ describe 'Direction', ->
       right: 40
 
     direction.update()
-    expect(direction.toString()).to.equal 'direction-left-top'
+    expect(direction.toString()).to.equal 'direction-top-left'
 
     $pointTo.css
       left: 40
@@ -167,7 +167,7 @@ describe 'Direction', ->
       right: 'auto'
 
     direction.update()
-    expect(direction.toString()).to.equal 'direction-right-top'
+    expect(direction.toString()).to.equal 'direction-top-right'
 
 describe 'Position', ->
 

@@ -6,7 +6,7 @@
  * Released under the MIT license
  * http://mycolorway.github.io/qing-popover/license.html
  *
- * Date: 2016-10-15
+ * Date: 2016-11-8
  */
 ;(function(root, factory) {
   if (typeof module === 'object' && module.exports) {
@@ -25,6 +25,10 @@ var Direction,
 Direction = (function(superClass) {
   extend(Direction, superClass);
 
+  function Direction() {
+    return Direction.__super__.constructor.apply(this, arguments);
+  }
+
   Direction.opts = {
     pointTo: null,
     popover: null,
@@ -34,16 +38,19 @@ Direction = (function(superClass) {
 
   Direction._directions = ["direction-left-top", "direction-left-middle", "direction-left-bottom", "direction-right-top", "direction-right-bottom", "direction-right-middle", "direction-top-left", "direction-top-right", "direction-top-center", "direction-bottom-left", "direction-bottom-right", "direction-bottom-center"];
 
-  function Direction(opts) {
-    Direction.__super__.constructor.apply(this, arguments);
-    this.opts = $.extend({}, Direction.opts, this.opts);
+  Direction.prototype._setOptions = function(opts) {
+    Direction.__super__._setOptions.apply(this, arguments);
+    return $.extend(this.opts, Direction.opts, opts);
+  };
+
+  Direction.prototype._init = function() {
     this.pointTo = this.opts.pointTo;
     this.popover = this.opts.popover;
     this.boundary = this.pointTo.closest(this.opts.boundarySelector);
     if (!this.boundary.length) {
-      this.boundary = $(window);
+      return this.boundary = $(window);
     }
-  }
+  };
 
   Direction.prototype._getSpaces = function($el) {
     var height, offset, width;
@@ -67,47 +74,41 @@ Direction = (function(superClass) {
   };
 
   Direction.prototype.update = function() {
-    var boundarySpaces, directions, pointToSpaces, ref, spaceCoefficient, spaces;
+    var beyond, directions, horizental, ref, vertical;
     if (this.opts.direction) {
       directions = this.opts.direction.split('-');
     } else {
-      pointToSpaces = this._getSpaces(this.pointTo);
-      boundarySpaces = this._getSpaces(this.boundary);
-      spaces = ['left', 'right', 'top', 'bottom'].reduce(function(spaces, name) {
-        spaces[name] = pointToSpaces[name] - boundarySpaces[name];
-        return spaces;
-      }, {});
-      spaceCoefficient = [
-        {
-          direction: 'right',
-          beyond: Math.max(this.popover.outerWidth() - spaces.right, 0) * this.popover.outerHeight() + Math.max(this.popover.outerHeight() - this.boundary.height(), 0) * this.popover.outerWidth()
-        }, {
-          direction: 'left',
-          beyond: Math.max(this.popover.outerWidth() - spaces.left, 0) * this.popover.outerHeight() + Math.max(this.popover.outerHeight() - this.boundary.height(), 0) * this.popover.outerWidth()
-        }, {
-          direction: 'bottom',
-          beyond: Math.max(this.popover.outerHeight() - spaces.bottom, 0) * this.popover.outerWidth() + Math.max(this.popover.outerWidth() - this.boundary.width(), 0) * this.popover.outerHeight()
-        }, {
-          direction: 'top',
-          beyond: Math.max(this.popover.outerHeight() - spaces.top, 0) * this.popover.outerWidth() + Math.max(this.popover.outerWidth() - this.boundary.width(), 0) * this.popover.outerHeight()
-        }
-      ].sort(function(a, b) {
-        if (a.beyond > b.beyond) {
-          return 1;
-        }
-        return -1;
-      });
-      directions = [spaceCoefficient[0].direction];
+      beyond = this._spaceCoefficient();
+      vertical = beyond.top > 0 ? 'bottom' : beyond.top >= beyond.bottom ? 'bottom' : 'top';
+      horizental = beyond.left > 0 ? 'right' : beyond.left >= beyond.right ? 'right' : 'left';
+      directions = beyond[vertical] > beyond[horizental] ? horizental : vertical;
+      directions = [directions];
       if (/top|bottom/.test(directions[0])) {
-        directions[1] = 'center';
+        directions[1] = horizental;
       } else if (/left|right/.test(directions[0])) {
-        directions[1] = spaces.top > spaces.bottom ? 'top' : 'bottom';
+        directions[1] = vertical;
       }
     }
     this.directions = directions;
     if (ref = this.toString(), indexOf.call(Direction._directions, ref) < 0) {
       throw new Error('[QingPopover] - direction is not valid');
     }
+  };
+
+  Direction.prototype._spaceCoefficient = function() {
+    var boundarySpaces, pointToSpaces, spaces;
+    pointToSpaces = this._getSpaces(this.pointTo);
+    boundarySpaces = this._getSpaces(this.boundary);
+    spaces = ['left', 'right', 'top', 'bottom'].reduce(function(spaces, name) {
+      spaces[name] = pointToSpaces[name] - boundarySpaces[name];
+      return spaces;
+    }, {});
+    return {
+      left: Math.max(this.popover.outerWidth() - spaces.left, 0) * this.popover.outerHeight() + Math.max(this.popover.outerHeight() - this.boundary.height(), 0) * this.popover.outerWidth(),
+      right: Math.max(this.popover.outerWidth() - spaces.right, 0) * this.popover.outerHeight() + Math.max(this.popover.outerHeight() - this.boundary.height(), 0) * this.popover.outerWidth(),
+      top: Math.max(this.popover.outerHeight() - spaces.top, 0) * this.popover.outerWidth() + Math.max(this.popover.outerWidth() - this.boundary.width(), 0) * this.popover.outerHeight(),
+      bottom: Math.max(this.popover.outerHeight() - spaces.bottom, 0) * this.popover.outerWidth() + Math.max(this.popover.outerWidth() - this.boundary.width(), 0) * this.popover.outerHeight()
+    };
   };
 
   Direction.prototype.toString = function() {
@@ -128,6 +129,10 @@ var Position,
 Position = (function(superClass) {
   extend(Position, superClass);
 
+  function Position() {
+    return Position.__super__.constructor.apply(this, arguments);
+  }
+
   Position.opts = {
     pointTo: null,
     popover: null,
@@ -138,14 +143,17 @@ Position = (function(superClass) {
     }
   };
 
-  function Position(opts) {
-    Position.__super__.constructor.apply(this, arguments);
-    this.opts = $.extend({}, Position.opts, this.opts);
+  Position.prototype._setOptions = function(opts) {
+    Position.__super__._setOptions.apply(this, arguments);
+    return $.extend(this.opts, Position.opts, opts);
+  };
+
+  Position.prototype._init = function() {
     this.pointTo = this.opts.pointTo;
     this.popover = this.opts.popover;
     this.top = 0;
-    this.left = 0;
-  }
+    return this.left = 0;
+  };
 
   Position.prototype.update = function(directions) {
     this.directions = directions;
@@ -273,7 +281,6 @@ QingPopover = (function(superClass) {
   };
 
   QingPopover.prototype._init = function() {
-    this.opts = $.extend({}, QingPopover.opts, this.opts);
     this.pointTo = $(this.opts.pointTo);
     if (!(this.pointTo.length > 0)) {
       throw new Error('QingPopover: option pointTo is required');

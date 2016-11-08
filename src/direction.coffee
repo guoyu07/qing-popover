@@ -21,9 +21,11 @@ class Direction extends QingModule
     "direction-bottom-center"
   ]
 
-  constructor: (opts) ->
+  _setOptions: (opts) ->
     super
-    @opts = $.extend {}, Direction.opts, @opts
+    $.extend @opts, Direction.opts, opts
+
+  _init: ->
     @pointTo = @opts.pointTo
     @popover = @opts.popover
     @boundary = @pointTo.closest(@opts.boundarySelector)
@@ -49,40 +51,53 @@ class Direction extends QingModule
     if @opts.direction
       directions = @opts.direction.split('-')
     else
-      pointToSpaces = @_getSpaces @pointTo
-      boundarySpaces = @_getSpaces @boundary
+      beyond = @_spaceCoefficient()
 
-      spaces = ['left', 'right', 'top', 'bottom'].reduce (spaces, name) ->
-        spaces[name] = pointToSpaces[name] - boundarySpaces[name]
-        spaces
-      , {}
+      vertical = if beyond.top > 0
+                   'bottom'
+                 else if beyond.top >= beyond.bottom
+                   'bottom'
+                 else
+                   'top'
 
-      spaceCoefficient = [{
-        direction: 'right'
-        beyond: Math.max(@popover.outerWidth() - spaces.right, 0) * @popover.outerHeight() + Math.max(@popover.outerHeight() - @boundary.height(), 0) * @popover.outerWidth()
-      }, {
-        direction: 'left'
-        beyond: Math.max(@popover.outerWidth() - spaces.left, 0) * @popover.outerHeight() + Math.max(@popover.outerHeight() - @boundary.height(), 0) * @popover.outerWidth()
-      }, {
-        direction: 'bottom'
-        beyond: Math.max(@popover.outerHeight() - spaces.bottom, 0) * @popover.outerWidth() + Math.max(@popover.outerWidth() - @boundary.width(), 0) * @popover.outerHeight()
-      }, {
-        direction: 'top'
-        beyond: Math.max(@popover.outerHeight() - spaces.top, 0) * @popover.outerWidth() + Math.max(@popover.outerWidth() - @boundary.width(), 0) * @popover.outerHeight()
-      }].sort (a, b) ->
-        return 1 if a.beyond > b.beyond
-        -1
+      horizental = if beyond.left > 0
+                     'right'
+                   else if beyond.left >= beyond.right
+                     'right'
+                   else
+                     'left'
 
-      directions = [spaceCoefficient[0].direction]
+      directions = if beyond[vertical] > beyond[horizental]
+                     horizental
+                   else
+                     vertical
+
+      directions = [directions]
 
       if /top|bottom/.test directions[0]
-        directions[1] = 'center'
+        directions[1] = horizental
       else if /left|right/.test directions[0]
-        directions[1] = if spaces.top > spaces.bottom then 'top' else 'bottom'
+        directions[1] = vertical
 
     @directions = directions
     unless @toString() in Direction._directions
       throw new Error '[QingPopover] - direction is not valid'
+
+  _spaceCoefficient: ->
+    pointToSpaces = @_getSpaces @pointTo
+    boundarySpaces = @_getSpaces @boundary
+
+    spaces = ['left', 'right', 'top', 'bottom'].reduce (spaces, name) ->
+      spaces[name] = pointToSpaces[name] - boundarySpaces[name]
+      spaces
+    , {}
+
+    {
+      left: Math.max(@popover.outerWidth() - spaces.left, 0) * @popover.outerHeight() + Math.max(@popover.outerHeight() - @boundary.height(), 0) * @popover.outerWidth()
+      right: Math.max(@popover.outerWidth() - spaces.right, 0) * @popover.outerHeight() + Math.max(@popover.outerHeight() - @boundary.height(), 0) * @popover.outerWidth()
+      top: Math.max(@popover.outerHeight() - spaces.top, 0) * @popover.outerWidth() + Math.max(@popover.outerWidth() - @boundary.width(), 0) * @popover.outerHeight()
+      bottom: Math.max(@popover.outerHeight() - spaces.bottom, 0) * @popover.outerWidth() + Math.max(@popover.outerWidth() - @boundary.width(), 0) * @popover.outerHeight()
+    }
 
   toString: ->
     "direction-#{ @directions.join('-') }"

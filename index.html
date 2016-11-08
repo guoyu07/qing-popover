@@ -9,7 +9,25 @@
 	<style>
 		.test-el {
 			position: absolute;
+		}
+
+		.left-top {
 			top: 20px;
+			left: 20px;
+		}
+
+		.left-bottom {
+			bottom: 20px;
+			left: 20px;
+		}
+
+		.right-top {
+			top: 20px;
+			right: 20px;
+		}
+
+		.right-bottom {
+			bottom: 20px;
 			right: 20px;
 		}
 
@@ -23,8 +41,6 @@
 
 		.box .test-box-el {
 			position: absolute;
-			right: 20px;
-			bottom: 20px;
 		}
 	</style>
 
@@ -36,7 +52,7 @@
 			$('.test-el').on('click', function(e) {
 			  var qingPopover = new QingPopover({
 	        pointTo: e.target,
-					content: '<p>hello</p><p>hello</p><p>hello</p><p>hello</p><p>hello</p><p>hello</p>'
+					content: '<p>hello</p><p>hello</p><p>hello</p><p>hellohellohellohellohellohellohellohellohellohellohello</p><p>hello</p><p>hello</p>'
 	      });
 			});
 
@@ -44,7 +60,7 @@
 			  var qingPopover = new QingPopover({
 	        pointTo: e.target,
 					boundarySelector: '.box',
-					content: '<p>hello</p><p>hello</p><p>hello</p><p>hello</p><p>hello</p><p>hello</p>'
+					content: '<p>hello</p><p>hello</p><p>hello</p><p>hello</p><p>hello</p><p>hello</p><p>hello</p><p>hello</p><p>hello</p>'
 	      });
 			});
 		});
@@ -52,10 +68,16 @@
 
 </head>
 <body>
-  <span class="test-el">click me</span>
+  <span class="test-el left-top">click me</span>
+  <span class="test-el left-bottom">click me</span>
+  <span class="test-el right-top">click me</span>
+  <span class="test-el right-bottom">click me</span>
 
 	<div class="box">
-	  <span class="test-box-el">click me</span>
+	  <span class="test-box-el left-top">click me</span>
+	  <span class="test-box-el left-bottom">click me</span>
+	  <span class="test-box-el right-top">click me</span>
+	  <span class="test-box-el right-bottom">click me</span>
 	</div>
 </body>
 </html>
